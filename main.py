@@ -6,7 +6,7 @@ app = FastAPI()
 
 @app.get("/products")
 def get_products():
-    query = Product.select().dicts()
+    query = Product.select().order_by(Product.product_id).dicts()
     return {'products':list(query)}
 
 if __name__ == "__main__":

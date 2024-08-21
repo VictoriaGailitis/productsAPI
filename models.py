@@ -1,16 +1,15 @@
 ﻿from peewee import *
-from playhouse.mysql_ext import MySQLConnectorDatabase
 import os
 from dotenv import load_dotenv 
 
 load_dotenv()
 
-mysql_db = MySQLConnectorDatabase('products', user=os.getenv("USER"), password=os.getenv("PASSWORD"),
-                        host=os.getenv("HOST"), port=3307)
+pg_db = PostgresqlDatabase('verceldb', user=os.getenv("USER"), password=os.getenv("PASSWORD"),
+                        host=os.getenv("HOST"), port=5432)
 
 class BaseModel(Model):
     class Meta:
-        database = mysql_db
+        database = pg_db
 
 class Product(BaseModel):
     product_id = AutoField(column_name='product_id')
@@ -19,4 +18,4 @@ class Product(BaseModel):
     product_price = IntegerField(column_name='product_price', null=False)
 
     class Meta:
-        table_name = 'Products'
+        table_name = 'products'
