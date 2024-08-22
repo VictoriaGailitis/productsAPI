@@ -1,8 +1,22 @@
 from fastapi import FastAPI
 import uvicorn
 from models import Product
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/")
+async def main():
+    return {"message": "Hello World"}
+
 
 @app.get("/products")
 def get_products():
