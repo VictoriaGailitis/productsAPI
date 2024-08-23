@@ -2,6 +2,7 @@ from fastapi import FastAPI
 import uvicorn
 from models import Product
 from fastapi.middleware.cors import CORSMiddleware
+import random
 
 app = FastAPI()
 
@@ -33,6 +34,14 @@ def get_product(product_id : int):
         return {'product': query.__data__}
     except:
         return {'error': "item does not exist"}
+
+@app.get("/recommendation/{product_id}")
+def get_recommendation(product_id : int):
+    try:
+        query = Product.select().order_by(Product.product_id).dicts()
+        return {'recommendation': random.sample(list(query), 2)}
+    except:
+        return {'status': "error"}
 
 if __name__ == "__main__":
     uvicorn.run(app)
